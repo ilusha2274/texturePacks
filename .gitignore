@@ -1,0 +1,30 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+__MACOSX/
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Исходники графики (Photoshop/GIMP/Krita/Aseprite) — в пак не идут
+*.psd
+*.xcf
+*.kra
+*.ase
+*.aseprite
+
+# Временные файлы и бэкапы
+*.tmp
+*.bak
+*.log
+tmp/
