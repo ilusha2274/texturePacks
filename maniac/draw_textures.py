@@ -245,7 +245,10 @@ def crossbow(loaded):
         if -9 <= u <= -7 and 2 <= p <= 3:
             return hexc('3c4046')  # спуск
         return None
-    return diag(rule, outline=hexc('241a12'))
+    img = diag(rule, outline=hexc('241a12'))
+    # Ванильные повороты модели арбалета в руке рассчитаны на текстуру, где перед смотрит в
+    # верхний ЛЕВЫЙ угол, а рукоять - в нижний правый. Рисуем в своих координатах и зеркалим.
+    return [list(reversed(row)) for row in img]
 
 
 CROSSBOW_ARROW = crossbow(True)
