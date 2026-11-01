@@ -1,0 +1,8 @@
+{
+  "pack": {
+    "description": "Маньяк: без шкалы голода, свои предметы",
+    "pack_format": 88,
+    "min_format": 75,
+    "max_format": 99
+  }
+}
