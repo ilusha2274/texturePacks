@@ -35,7 +35,6 @@ EOF
 simple_item medkit     minecraft:item/golden_apple
 simple_item adrenaline minecraft:item/dragon_breath
 simple_item fuel       minecraft:item/lava_bucket
-simple_item dynamite   minecraft:block/tnt
 simple_item gas_wrench minecraft:item/iron_hoe
 simple_item sword      minecraft:item/stone_sword
 
@@ -67,6 +66,42 @@ cat > "$ITEMS/crossbow.json" <<EOF
       }
     ],
     "fallback": { "type": "minecraft:model", "model": "$standby" }
+  }
+}
+EOF
+
+# Динамит - блок (дисплей в мире, «дышит» и горит из кода). Своя модель включается, когда есть
+# dynamite_side.png; верх/низ берутся из dynamite_top.png/dynamite_bottom.png, а если их нет - от
+# ванильного TNT. Анимация: кадры 16x16 столбиком (PNG 16 x 16*N), скорость - frametime в
+# dynamite_side.png.mcmeta / dynamite_top.png.mcmeta (тиков на кадр).
+MODELS=assets/hypetrain/models/item/maniac
+if [ -f "$TEXTURES/dynamite_side.png" ]; then
+    top=minecraft:block/tnt_top
+    bottom=minecraft:block/tnt_bottom
+    [ -f "$TEXTURES/dynamite_top.png" ] && top=hypetrain:item/maniac/dynamite_top
+    [ -f "$TEXTURES/dynamite_bottom.png" ] && bottom=hypetrain:item/maniac/dynamite_bottom
+    cat > "$MODELS/dynamite_block.json" <<EOF
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "hypetrain:item/maniac/dynamite_side",
+    "top": "$top",
+    "bottom": "$bottom"
+  }
+}
+EOF
+    model=hypetrain:item/maniac/dynamite_block
+    echo "  dynamite_block: своя текстура (верх: $top, низ: $bottom)"
+else
+    rm -f "$MODELS/dynamite_block.json"
+    model=minecraft:block/tnt
+    echo "  dynamite_block: заглушка minecraft:block/tnt (нет $TEXTURES/dynamite_side.png)"
+fi
+cat > "$ITEMS/dynamite_block.json" <<EOF
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "$model"
   }
 }
 EOF

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:item/dragon_breath"
+    "model": "hypetrain:item/maniac/adrenaline"
   }
 }

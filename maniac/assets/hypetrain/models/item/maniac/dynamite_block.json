@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "hypetrain:item/maniac/dynamite_side",
+    "top": "hypetrain:item/maniac/dynamite_top",
+    "bottom": "hypetrain:item/maniac/dynamite_bottom"
+  }
+}

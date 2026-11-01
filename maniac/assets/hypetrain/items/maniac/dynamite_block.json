@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:block/tnt"
+    "model": "hypetrain:item/maniac/dynamite_block"
   }
 }

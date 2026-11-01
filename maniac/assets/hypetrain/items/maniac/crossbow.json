@@ -5,9 +5,9 @@
     "cases": [
       {
         "when": "arrow",
-        "model": { "type": "minecraft:model", "model": "minecraft:item/crossbow_arrow" }
+        "model": { "type": "minecraft:model", "model": "hypetrain:item/maniac/crossbow_arrow" }
       }
     ],
-    "fallback": { "type": "minecraft:model", "model": "minecraft:item/crossbow" }
+    "fallback": { "type": "minecraft:model", "model": "hypetrain:item/maniac/crossbow_standby" }
   }
 }
