@@ -1,4 +1,8 @@
-"""Рисует текстуры 16x16 для пака Маньяка и превью-лист. Без PIL: свой PNG-кодер."""
+"""Рисует текстуры 16x16 для пака Маньяка и превью-лист. Без PIL: свой PNG-кодер.
+
+python3 draw_textures.py <папка> <превью.png> [имя ...] — с именами перерисовывает только их
+(например, defibrillator maniac_hook), остальные PNG в папке не трогает.
+"""
 import os
 import struct
 import sys
@@ -320,6 +324,72 @@ def strip(frames):
     return out
 
 
+# ---------------------------------------------------------------- дефибриллятор медика
+# Оранжевый корпус AED с сердцем и молнией, сверху два электрода, провода уходят в корпус.
+DEFIBRILLATOR = grid([
+    "................",
+    ".HHH........HHH.",
+    ".SSS........SSS.",
+    "..R..........K..",
+    "..R..........K..",
+    "..RR........KK..",
+    "...R........K...",
+    ".DDRDDDDDDDDKDD.",
+    ".DLLLLLLLLLLLLD.",
+    ".DLOOCCOOCCOOSD.",
+    ".DLOCCCCCCCCOSD.",
+    ".DLOCCCYYCCCOSD.",
+    ".DLOOCYYCCCOOSD.",
+    ".DLOOOCCCCOOOSD.",
+    ".DSSSSSCCSSSSSD.",
+    ".DDDDDDDDDDDDDD.",
+], {
+    'H': hexc('1d1f24'), 'S': hexc('c46a12'),
+    'R': hexc('d42a2a'), 'K': hexc('2b2d33'),
+    'D': hexc('3a1f08'), 'L': hexc('ffc46b'), 'O': hexc('f39a1e'),
+    'C': hexc('d8262b'), 'Y': hexc('fff3a8'),
+})
+# электроды: серебристые пластины, а не цвет тени корпуса
+for x in (1, 2, 3, 12, 13, 14):
+    DEFIBRILLATOR[2][x] = hexc('d6dae2')
+# низ сердца — на тени корпуса
+DEFIBRILLATOR[14][7] = hexc('a81c20')
+DEFIBRILLATOR[14][8] = hexc('a81c20')
+
+
+# ---------------------------------------------------------------- хук маньяка
+def maniac_hook():
+    """Цепь из колец от рукояти (низ-лево) и толстый стальной крюк-дуга с острием (верх-право)."""
+    import math
+    img = blank()
+    steel = hexc('b9bec7')
+    shine = hexc('eef1f5')
+    shadow = hexc('7d838e')
+    dark = hexc('5b616b')
+    # кольца цепи — ромбы с пустой серединой, между ними перемычки
+    for cx, cy in ((2, 13), (5, 10)):
+        for dx, dy in ((0, -1), (1, 0), (0, 1), (-1, 0)):
+            img[cy + dy][cx + dx] = steel
+        img[cy - 1][cx] = shine
+    for x, y in ((3, 12), (4, 11), (6, 9), (7, 8)):
+        img[y][x] = dark
+    # крюк: дуга от левого края (где цепь) вниз, вправо и вверх; сверху открыта
+    cx, cy = 11.0, 7.5
+    for y in range(N):
+        for x in range(N):
+            dx, dy = x + 0.5 - cx, y + 0.5 - cy
+            r = math.hypot(dx, dy)
+            angle = math.degrees(math.atan2(dy, dx))  # 0 — вправо, 90 — вниз (y вниз)
+            if 2.0 <= r <= 3.7 and not (-150 < angle < -45):
+                img[y][x] = shine if dy < -0.5 and dx > 0 else (shadow if dy > 1.5 else steel)
+    # острие: от правого конца дуги вверх-влево, к стержню
+    for x, y in ((13, 3), (12, 2)):
+        img[y][x] = steel
+    img[2][12] = hexc('ffffff')
+    add_outline(img, hexc('1b1d22'))
+    return img
+
+
 TEXTURES = {
     'medkit': MEDKIT,
     'fuel': FUEL,
@@ -331,7 +401,13 @@ TEXTURES = {
     'dynamite_side': strip([dynamite_side(g) for g in (0.0, 0.5, 1.0, 0.5)]),
     'dynamite_top': strip([dynamite_top(s) for s in range(4)]),
     'dynamite_bottom': dynamite_top(0, with_fuse=False),
+    'defibrillator': DEFIBRILLATOR,
+    'maniac_hook': maniac_hook(),
 }
+
+ONLY = sys.argv[3:]
+if ONLY:
+    TEXTURES = {name: TEXTURES[name] for name in ONLY}
 
 os.makedirs(OUT, exist_ok=True)
 for name, img in TEXTURES.items():

@@ -37,6 +37,8 @@ simple_item adrenaline minecraft:item/dragon_breath
 simple_item fuel       minecraft:item/lava_bucket
 simple_item gas_wrench minecraft:item/iron_hoe
 simple_item sword      minecraft:item/stone_sword
+simple_item defibrillator minecraft:item/heart_of_the_sea
+simple_item maniac_hook minecraft:item/fishing_rod
 
 # Арбалет выдаётся уже заряженным и пропадает после выстрела, поэтому важны два вида: заряжен
 # (crossbow_arrow.png) и пустой (crossbow_standby.png). Натяжение не рисуем - его не бывает.
