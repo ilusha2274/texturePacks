@@ -1,0 +1,11 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "hypetrain:font/fade.png",
+      "height": 400,
+      "ascent": 197,
+      "chars": [""]
+    }
+  ]
+}
