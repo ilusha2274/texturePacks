@@ -46,4 +46,9 @@ rm -f "$OUT"
 
 echo
 echo "Готово: $(pwd)/$OUT"
-echo "sha1:   $(shasum -a 1 "$OUT" | cut -d' ' -f1)"
+SHA1=$(shasum -a 1 "$OUT" | cut -d' ' -f1)
+echo "sha1:   $SHA1"
+echo
+echo "В server.properties всех шести серверов (после git push):"
+echo "resource-pack=https\\://raw.githubusercontent.com/ilusha2274/texturePacks/main/network/$OUT?v=${SHA1:0:7}"
+echo "resource-pack-sha1=$SHA1"
