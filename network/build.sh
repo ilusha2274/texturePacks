@@ -20,13 +20,16 @@ trap 'rm -rf "$STAGE"' EXIT
 
 # Маньяк генерирует JSON предметов под наличие текстур - прогоняем его сборку, чтобы они были свежие.
 echo "Маньяк:"
-"$ROOT/maniac/build.sh" > /dev/null
+"$ROOT/maniac/build.sh" --items-only > /dev/null
 echo "  предметы обновлены"
 
 cp pack.mcmeta "$STAGE/"
 cp -R assets "$STAGE/"
 cp -R "$ROOT/lobby/assets" "$STAGE/"
 cp -R "$ROOT/maniac/assets" "$STAGE/"
+# Оружие дуэлей лобби (кремнёвый пистолет, hypetrain:flintlock_red|blue). Исходник модели —
+# weapons/flintlock.bbmodel, assets из него генерирует weapons/bbmodel_to_java.py.
+cp -R "$ROOT/weapons/assets" "$STAGE/"
 
 # Шкала голода: маньяк прятал её всю, а в общем паке это задело бы все режимы (в Спидране голод
 # важен). Оставляем прозрачными только спрайты *_hunger - плагин маньяка вешает игрокам скрытый
@@ -41,8 +44,13 @@ cp "$ROOT/hideandseek/trident_riptide.png" "$STAGE/assets/minecraft/textures/ent
 cp "$ROOT/hideandseek/trident_riptide.png" "$STAGE/assets/minecraft/textures/entity/trident_riptide.png"
 
 rm -f "$OUT"
-# -X без лишних атрибутов macOS; .gitkeep и .DS_Store в пак не идут.
-(cd "$STAGE" && zip -q -X -r "$OLDPWD/$OUT" pack.mcmeta assets -x '*.DS_Store' -x '*/.gitkeep')
+# Детерминированный zip: одинаковое время у всех файлов, файлы в отсортированном порядке, без
+# записей каталогов (-D) и атрибутов macOS (-X). Тогда пересборка без правок даёт тот же zip и тот
+# же sha1 - не нужно трогать server.properties и коммитить «изменившийся» бинарник.
+# .gitkeep и .DS_Store в пак не идут.
+find "$STAGE" -exec touch -h -t 202001010000 {} +
+(cd "$STAGE" && find pack.mcmeta assets -type f ! -name '.DS_Store' ! -name '.gitkeep' | LC_ALL=C sort \
+    | zip -q -X -D "$OLDPWD/$OUT" -@)
 
 echo
 echo "Готово: $(pwd)/$OUT"

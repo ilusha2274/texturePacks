@@ -8,6 +8,9 @@ Mojang). С одним паком Velocity видит, что пак с этим
 ## Как обновить
 
 1. Правь текстуры в папках режимов (`lobby/`, `maniac/`, `hideandseek/`) - как раньше.
+   Оружие дуэлей — в `weapons/`: модель правится в `weapons/flintlock.bbmodel`, потом
+   `python3 weapons/bbmodel_to_java.py` пересоздаёт `weapons/assets` (положение в руке — словарь
+   `DISPLAY` в этом скрипте).
 2. `./network/build.sh` - соберёт `network/hypetrain-pack.zip` и напечатает sha1.
 3. Закоммить и запушь репозиторий.
 4. В `server.properties` **всех шести** Paper-серверов впиши новый `resource-pack-sha1` и поменяй

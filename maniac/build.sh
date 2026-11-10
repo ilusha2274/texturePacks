@@ -5,6 +5,10 @@
 # своя текстура в assets/hypetrain/textures/item/maniac/<id>.png: есть - предмет рисуется ею, нет -
 # пак временно отдаёт ванильную модель (чтобы в игре не было фиолетово-чёрных кубов).
 # Нарисовал PNG - положи его туда и перезапусти скрипт, править JSON руками не нужно.
+#
+# --items-only: только обновить JSON предметов, maniac-pack.zip не трогать. Так его зовёт
+# network/build.sh - иначе каждая сборка общего пака перепаковывала бы этот zip (новые байты при
+# том же содержимом) и он вылезал бы в git status.
 cd "$(dirname "$0")"
 set -e
 
@@ -107,6 +111,10 @@ cat > "$ITEMS/dynamite_block.json" <<EOF
   }
 }
 EOF
+
+if [ "$1" = "--items-only" ]; then
+    exit 0
+fi
 
 rm -f maniac-pack.zip
 # -X без лишних атрибутов macOS; README, скрипт и .gitkeep в пак не идут.

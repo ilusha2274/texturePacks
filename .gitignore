@@ -28,3 +28,6 @@ desktop.ini
 *.bak
 *.log
 tmp/
+
+# Тестовая сборка пака с оружием (weapons/build-test.sh) — раздаётся с мака, в git не нужна
+weapons/test-build/

@@ -1,0 +1,7 @@
+{
+  "parent": "hypetrain:item/flintlock",
+  "textures": {
+    "gun": "hypetrain:item/flintlock_blue",
+    "particle": "hypetrain:item/flintlock_blue"
+  }
+}
