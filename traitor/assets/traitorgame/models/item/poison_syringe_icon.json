@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "traitorgame:item/poison_syringe_icon"
+  }
+}

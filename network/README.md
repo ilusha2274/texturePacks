@@ -11,6 +11,11 @@ Mojang). С одним паком Velocity видит, что пак с этим
    Оружие дуэлей — в `weapons/`: модель правится в `weapons/flintlock.bbmodel`, потом
    `python3 weapons/bbmodel_to_java.py` пересоздаёт `weapons/assets` (положение в руке — словарь
    `DISPLAY` в этом скрипте).
+   Предметы «Предателя» — в `traitor/`: модели `traitor/knife.bbmodel` (нож) и
+   `traitor/syringe.bbmodel` (шприц) в формате Java Block/Item, положение в руке — вкладка Display
+   в Blockbench. `build.sh` сам запускает `traitor/build_models.py`, который пересоздаёт
+   `traitor/assets` (иконка шприца в инвентаре — адреналин Маньяка с зелёной жидкостью).
+   `traitor/build-test.sh` + `serve-test.sh` — тестовый пак с мака без правки общего.
 2. `./network/build.sh` - соберёт `network/hypetrain-pack.zip` и напечатает sha1.
 3. Закоммить и запушь репозиторий.
 4. В `server.properties` **всех шести** Paper-серверов впиши новый `resource-pack-sha1` и поменяй

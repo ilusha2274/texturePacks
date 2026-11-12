@@ -30,6 +30,11 @@ cp -R "$ROOT/maniac/assets" "$STAGE/"
 # Оружие дуэлей лобби (кремнёвый пистолет, hypetrain:flintlock_red|blue). Исходник модели —
 # weapons/flintlock.bbmodel, assets из него генерирует weapons/bbmodel_to_java.py.
 cp -R "$ROOT/weapons/assets" "$STAGE/"
+# Предметы «Предателя»: нож (traitorgame:traitor_knife) и шприц (traitorgame:poison_syringe, в
+# инвентаре плоская иконка). Исходники - traitor/knife.bbmodel и traitor/syringe.bbmodel, assets из
+# них генерирует traitor/build_models.py (запускаем, чтобы были свежие).
+python3 -I "$ROOT/traitor/build_models.py" > /dev/null
+cp -R "$ROOT/traitor/assets" "$STAGE/"
 
 # Шкала голода: маньяк прятал её всю, а в общем паке это задело бы все режимы (в Спидране голод
 # важен). Оставляем прозрачными только спрайты *_hunger - плагин маньяка вешает игрокам скрытый
@@ -58,5 +63,5 @@ SHA1=$(shasum -a 1 "$OUT" | cut -d' ' -f1)
 echo "sha1:   $SHA1"
 echo
 echo "В server.properties всех шести серверов (после git push):"
-echo "resource-pack=https\\://raw.githubusercontent.com/ilusha2274/texturePacks/main/network/$OUT?v=${SHA1:0:7}"
+echo "resource-pack=https\\://raw.githubusercontent.com/ilusha2274/texturePacks/main/network/$OUT?v\\=${SHA1:0:7}"
 echo "resource-pack-sha1=$SHA1"
